@@ -15,279 +15,102 @@
     align-items: center;
     overflow: hidden;
     color: white;
-    touch-action: manipulation;
+    text-align: center;
   }
+
   .card {
-    position: relative;
     background: #111;
     padding: 28px;
     border-radius: 22px;
-    text-align: center;
     width: 90%;
     max-width: 380px;
     box-shadow: 0 0 40px rgba(255, 51, 102, 0.4);
-    z-index: 1000;
   }
+
   h1 {
     color: #ff4d6d;
   }
-  button {
+
+  p {
+    font-size: 17px;
+  }
+
+  #yes {
     font-size: 17px;
     padding: 14px 26px;
     margin: 8px;
     border: none;
     border-radius: 30px;
     cursor: pointer;
-  }
-  #yes {
     background: #ff4d6d;
     color: white;
   }
+
   .escape {
     background: #333;
     color: #fff;
-    position: absolute;
-    z-index: 900;
+    margin: 4px;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 16px;
+    cursor: pointer;
   }
 
-  /* Improved Golgappa Animation */
-  .golgappa {
-    position: absolute;
-    bottom: -120px;
-    width: 100px;
-    height: 100px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    pointer-events: none;
-    filter: drop-shadow(0 0 15px rgba(255, 153, 102, 0.8));
-    animation: floatSway linear forwards;
-    transform-origin: center bottom;
-  }
-
-  @keyframes floatSway {
-    0% {
-      transform: translateX(0) translateY(0) rotate(0deg) scale(1);
-      opacity: 1;
-      filter: drop-shadow(0 0 15px rgba(255, 153, 102, 0.8));
-    }
-    50% {
-      transform: translateX(20px) translateY(-50vh) rotate(10deg) scale(1.05);
-      opacity: 0.85;
-      filter: drop-shadow(0 0 25px rgba(255, 180, 110, 1));
-    }
-    100% {
-      transform: translateX(-10px) translateY(-110vh) rotate(-8deg) scale(0.95);
-      opacity: 0;
-      filter: drop-shadow(0 0 10px rgba(255, 153, 102, 0.5));
-    }
-  }
-
-  /* Pani fill inside golgappa */
-  .pani {
-    position: absolute;
-    bottom: 25px;
-    left: 30px;
-    width: 40px;
-    height: 0;
-    background: rgba(0, 180, 255, 0.45);
-    border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
-    animation: fill 4s ease forwards;
-    pointer-events: none;
-    transform-origin: bottom center;
-    filter: drop-shadow(0 0 8px rgba(0, 200, 255, 0.6));
-  }
-  @keyframes fill {
-    from {
-      height: 0;
-    }
-    to {
-      height: 50%;
-    }
-  }
-
-  /* Kiss animation */
-  .kiss {
-    position: fixed;
-    font-size: 60px;
-    animation: kiss 2s ease forwards;
-    pointer-events: none;
-    z-index: 2000;
-  }
-  @keyframes kiss {
-    0% {
-      transform: scale(0.3);
-      opacity: 0;
-    }
-    20% {
-      opacity: 1;
-    }
-    100% {
-      transform: scale(1.6) translateY(-120px);
-      opacity: 0;
-    }
-  }
-
-  canvas {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 10;
-  }
-
-  /* Letter styling */
   #letter {
     display: none;
     font-size: 18px;
     line-height: 1.7;
     color: #ffb3c1;
-    min-height: 220px;
+    margin-top: 20px;
+  }
+
+  #golgappa-image {
+    width: 120px;
+    margin: 20px 0;
   }
 </style>
 </head>
 <body>
 
-<canvas id="fireworks"></canvas>
-
 <div class="card" id="card">
   <h1>Golgappa 💖</h1>
   <p>Will you be my Valentine? 🖤✨</p>
-  <button id="yes">Yes 💕</button>
 
-  <button class="escape" ontouchstart="move(this)" onmouseover="move(this)">No 😝</button>
-  <button class="escape" ontouchstart="move(this)" onmouseover="move(this)">Not now 🙈</button>
-  <button class="escape" ontouchstart="move(this)" onmouseover="move(this)">Never 😜</button>
+  <!-- Static Golgappa Image -->
+  <img id="golgappa-image" src="https://i.imgur.com/yG3NzvD.png" alt="Golgappa" />
+
+  <br>
+  <button id="yes">Yes 💕</button>
+  <button class="escape" onclick="alert('Try again 😝')">No 😝</button>
+  <button class="escape" onclick="alert('Maybe later 🙈')">Not now 🙈</button>
+  <button class="escape" onclick="alert('Never 😜')">Never 😜</button>
 </div>
 
-<div class="card" id="letter"></div>
+<div class="card" id="letter">
+  💌 <br><br>
+  My smile, my sukoon…<br>
+  I love your scent, your taste, and your presence—the way you exist, I find home.<br>
+  You don’t just fill my heart—you complete my soul, my Golgappa 😌<br>
+  Always yours 💖
+</div>
 
 <audio id="music" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6c9c9e8c43.mp3" />
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6c9c9e8c43.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-  function move(btn) {
-    btn.style.left = Math.random() * (innerWidth - 120) + "px";
-    btn.style.top = Math.random() * (innerHeight - 120) + "px";
-  }
-
-  const img = "https://i.imgur.com/yG3NzvD.png"; // Golgappa PNG image
-
-  setInterval(() => {
-    let g = document.createElement("div");
-    g.className = "golgappa";
-
-    let size = 90 + Math.random() * 30;
-    g.style.width = size + "px";
-    g.style.height = size + "px";
-    g.style.left = Math.random() * (window.innerWidth - size) + "px";
-    let dur = 7 + Math.random() * 4;
-    g.style.animationDuration = dur + "s";
-    g.style.backgroundImage = `url('${img}')`;
-    g.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
-
-    let pani = document.createElement("div");
-    pani.className = "pani";
-    pani.style.animationDuration = (3 + Math.random() * 2) + "s";
-    g.appendChild(pani);
-
-    document.body.appendChild(g);
-
-    setTimeout(() => g.remove(), dur * 1000);
-  }, 900);
-
-  const letterText = `💌
-
-My smile, my sukoon…
-I love your scent, your taste,
-and your presence—the way you exist,
-I find home.
-
-You don’t just fill my heart—
-you complete my soul,
-my Golgappa 😌
-
-Always yours 💖`;
-
-  function typeLetter() {
-    let i = 0;
-    letter.innerHTML = "";
-    let t = setInterval(() => {
-      letter.innerHTML += letterText.charAt(i);
-      i++;
-      if (i >= letterText.length) clearInterval(t);
-    }, 45);
-  }
+  const yes = document.getElementById("yes");
+  const card = document.getElementById("card");
+  const letter = document.getElementById("letter");
+  const music = document.getElementById("music");
 
   yes.onclick = () => {
-    if (confirm("Are you sure? 🖤💖")) {
+    if(confirm("Are you sure? 🖤💖")) {
       music.play();
-      beatGlow();
-      kissEffect();
-      startFireworks();
-      setTimeout(bigFireworks, 2000);
-      setTimeout(() => {
-        card.style.display = "none";
-        letter.style.display = "block";
-        typeLetter();
-      }, 3500);
+      card.style.display = "none";
+      letter.style.display = "block";
     }
   };
-
-  function kissEffect() {
-    let k = document.createElement("div");
-    k.className = "kiss";
-    k.innerHTML = "💋";
-    k.style.left = "50%";
-    k.style.top = "50%";
-    document.body.appendChild(k);
-    setTimeout(() => k.remove(), 2000);
-  }
-
-  function beatGlow() {
-    setInterval(() => {
-      document.querySelectorAll(".golgappa").forEach((g) => {
-        g.style.filter = "drop-shadow(0 0 25px #ffd166)";
-        setTimeout(() => {
-          g.style.filter = "drop-shadow(0 0 15px rgba(255,153,102,0.8))";
-        }, 300);
-      });
-    }, 600);
-  }
-
-  const canvas = document.getElementById("fireworks");
-  const ctx = canvas.getContext("2d");
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-  let particles = [];
-
-  function fire(x, y, n) {
-    for (let i = 0; i < n; i++)
-      particles.push({
-        x,
-        y,
-        vx: (Math.random() - 0.5) * 6,
-        vy: (Math.random() - 0.5) * 6,
-        l: 70,
-      });
-  }
-  function startFireworks() {
-    setInterval(() => fire(Math.random() * canvas.width, Math.random() * (canvas.height / 2), 28), 900);
-  }
-  function bigFireworks() {
-    fire(canvas.width / 2, canvas.height / 2, 260);
-  }
-  (function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach((p, i) => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.l--;
-      ctx.fillStyle = "#ffb3c1";
-      ctx.fillRect(p.x, p.y, 2, 2);
-      if (p.l <= 0) particles.splice(i, 1);
-    });
-    requestAnimationFrame(animate);
-  })();
 </script>
 
 </body>
